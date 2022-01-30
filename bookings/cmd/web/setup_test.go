@@ -19,3 +19,4 @@ func (mh *myHandler) ServeHTTP(w http.ResponseWriter, e *http.Request) {
 // go test -v
 // go test -cover
 // go test -coverprofile=cove rage.out && go tool cover -html=coverage.out
+// go test -v ./...
