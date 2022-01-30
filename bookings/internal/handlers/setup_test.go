@@ -21,17 +21,16 @@ import (
 var app config.AppConfig
 var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
-
 var functions = template.FuncMap{}
 
 func getRoutes() http.Handler {
 	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 
-	//change this to true when in production
+	// change this to true when in production
 	app.InProduction = false
 
-	//session
+	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -44,17 +43,19 @@ func getRoutes() http.Handler {
 	if err != nil {
 		log.Fatal("cannot create template cache")
 	}
+
 	app.TemplateCache = tc
 	app.UseCache = true
 
 	repo := NewRepo(&app)
 	NewHandlers(repo)
+
 	render.NewTemplates(&app)
 
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)
+	// mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 
 	mux.Get("/", Repo.Home)
@@ -102,14 +103,13 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 
 	myCache := map[string]*template.Template{}
 
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
+	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 	if err != nil {
 		return myCache, err
 	}
 
 	for _, page := range pages {
 		name := filepath.Base(page)
-		fmt.Println("Parse is currently", page)
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return myCache, err
