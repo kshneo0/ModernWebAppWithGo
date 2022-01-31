@@ -5,3 +5,12 @@ soda generate fizz CreateRestrictionsTable
 soda generate fizz CreateRoomRestrictionsTable
 
 soda generate fizz CreateFKReservationTable
+
+soda generate fizz CreateFKRoomRestrictions
+
+soda generate fizz CreateUniqueIndexForUsersTable
+
+soda generate fizz AddFKAndIndicesToReservationTable
+
+
+soda reset
