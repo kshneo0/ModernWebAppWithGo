@@ -7,10 +7,13 @@ import (
 	"net/http"
 
 	"github.com/ModernWebAppWithGo/bookings/internal/config"
+	"github.com/ModernWebAppWithGo/bookings/internal/driver"
 	"github.com/ModernWebAppWithGo/bookings/internal/forms"
 	"github.com/ModernWebAppWithGo/bookings/internal/helpers"
 	"github.com/ModernWebAppWithGo/bookings/internal/models"
 	"github.com/ModernWebAppWithGo/bookings/internal/render"
+	"github.com/ModernWebAppWithGo/bookings/internal/repository"
+	"github.com/ModernWebAppWithGo/bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by handlers
@@ -19,12 +22,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
@@ -35,6 +40,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the about page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
