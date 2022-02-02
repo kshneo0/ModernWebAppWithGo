@@ -15,6 +15,7 @@ import (
 	"github.com/ModernWebAppWithGo/bookings/internal/render"
 	"github.com/ModernWebAppWithGo/bookings/internal/repository"
 	"github.com/ModernWebAppWithGo/bookings/internal/repository/dbrepo"
+	"github.com/go-chi/chi"
 )
 
 // Repo the repository used by handlers
@@ -258,4 +259,43 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
+}
+
+// ChooseRoom displays list of available rooms
+func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
+	// used to have next 6 lines
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		// log.Println(err)
+		// m.App.Session.Put(r.Context(), "error", "missing url parameter")
+		// http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// changed to this, so we can test it more easily
+	// split the URL up by /, and grab the 3rd element
+	// exploded := strings.Split(r.RequestURI, "/")
+	// roomID, err := strconv.Atoi(exploded[2])
+	// if err != nil {
+	// 	m.App.Session.Put(r.Context(), "error", "missing url parameter")
+	// 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	// 	return
+	// }
+
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, err)
+		// m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		// http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	res.RoomID = roomID
+
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
+
 }
