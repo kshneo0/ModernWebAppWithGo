@@ -240,19 +240,19 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 	roomID, _ := strconv.Atoi(r.Form.Get("room_id"))
 
-	available, err := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomID)
-	if err != nil {
-		// got a database error, so return appropriate json
-		resp := jsonResponse{
-			OK:      false,
-			Message: "Error querying database",
-		}
+	available, _ := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomID)
+	// if err != nil {
+	// 	// got a database error, so return appropriate json
+	// 	resp := jsonResponse{
+	// 		OK:      false,
+	// 		Message: "Error querying database",
+	// 	}
 
-		out, _ := json.MarshalIndent(resp, "", "     ")
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(out)
-		return
-	}
+	// 	out, _ := json.MarshalIndent(resp, "", "     ")
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	w.Write(out)
+	// 	return
+	// }
 	resp := jsonResponse{
 		OK:        available,
 		Message:   "",
