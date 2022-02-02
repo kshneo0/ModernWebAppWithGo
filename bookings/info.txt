@@ -14,3 +14,5 @@ soda generate fizz AddFKAndIndicesToReservationTable
 
 
 soda reset
+
+soda generate sql SeedRoomsTable
