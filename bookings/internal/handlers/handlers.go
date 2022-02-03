@@ -354,13 +354,13 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 // ChooseRoom displays list of available rooms
 func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
 	// used to have next 6 lines
-	//roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
-	//if err != nil {
-	//	log.Println(err)
-	//	m.App.Session.Put(r.Context(), "error", "missing url parameter")
-	//	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-	//	return
-	//}
+	// roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	// if err != nil {
+	// 	log.Println(err)
+	// 	m.App.Session.Put(r.Context(), "error", "missing url parameter")
+	// 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	// 	return
+	// }
 
 	// changed to this, so we can test it more easily
 	// split the URL up by /, and grab the 3rd element
