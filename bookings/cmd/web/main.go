@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
 	"os"
 	"time"
 
@@ -33,6 +34,14 @@ func main() {
 	}
 
 	defer db.SQL.Close()
+
+	//brew services start mailhog
+	from := "kshneo@gmail.com"
+	auth := smtp.PlainAuth("", from, "", "localhost")
+	err = smtp.SendMail("localhost:1025", auth, from, []string{"you@there.com"}, []byte("Hello, world"))
+	if err != nil {
+		log.Println(err)
+	}
 
 	fmt.Println(fmt.Sprintf("Startung application on port %s", portNumber))
 
