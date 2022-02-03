@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com/ModernWebAppWithGo/bookings/internal/config"
@@ -24,8 +25,7 @@ var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 var functions = template.FuncMap{}
 
-func getRoutes() http.Handler {
-	// what am I going to put in the session
+func TestMain(m *testing.M) {
 	gob.Register(models.Reservation{})
 
 	// change this to true when in production
@@ -37,7 +37,6 @@ func getRoutes() http.Handler {
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
 
-	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -56,13 +55,16 @@ func getRoutes() http.Handler {
 
 	repo := NewTestRepo(&app)
 	NewHandlers(repo)
-
 	render.NewRenderer(&app)
 
+	os.Exit(m.Run())
+}
+
+func getRoutes() http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
-	// mux.Use(NoSurf)
+	//mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 
 	mux.Get("/", Repo.Home)
@@ -96,7 +98,6 @@ func NoSurf(next http.Handler) http.Handler {
 		Secure:   app.InProduction,
 		SameSite: http.SameSiteLaxMode,
 	})
-
 	return csrfHandler
 }
 
@@ -122,7 +123,7 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 			return myCache, err
 		}
 
-		matches, err := filepath.Glob(fmt.Sprintf("%s/*layout.tmpl", pathToTemplates))
+		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
 			return myCache, err
 		}
@@ -138,5 +139,4 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 	}
 
 	return myCache, nil
-
 }
