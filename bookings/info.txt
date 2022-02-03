@@ -17,3 +17,8 @@ soda reset
 
 soda generate sql SeedRoomsTable
 soda generate sql SeedRestrictionsTable
+
+
+
+// Password 생성
+https://go.dev/play/p/uKMMCzJWGsW
