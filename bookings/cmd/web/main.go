@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/smtp"
 	"os"
 	"time"
 
@@ -35,13 +34,31 @@ func main() {
 
 	defer db.SQL.Close()
 
-	//brew services start mailhog
-	from := "kshneo@gmail.com"
-	auth := smtp.PlainAuth("", from, "", "localhost")
-	err = smtp.SendMail("localhost:1025", auth, from, []string{"you@there.com"}, []byte("Hello, world"))
-	if err != nil {
-		log.Println(err)
-	}
+	defer close(app.MailChan)
+
+	fmt.Println("Starting mail listener...")
+	listenForMail()
+
+	// msg := models.MailData{
+	// 	To:      "kshneo@gmail.com",
+	// 	From:    "kshneo@here.com",
+	// 	Subject: "Some Subject",
+	// 	Content: "",
+	// }
+	// app.MailChan <- msg
+
+	// brew install mailhog
+	// brew services start mailhog
+	// brew services stop mailhog
+	// localhost:8025
+
+	// go 표준 메일 보내기
+	// from := "kshneo@gmail.com"
+	// auth := smtp.PlainAuth("", from, "", "localhost")
+	// err = smtp.SendMail("localhost:1025", auth, from, []string{"you@there.com"}, []byte("Hello, world"))
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
 	fmt.Println(fmt.Sprintf("Startung application on port %s", portNumber))
 
@@ -63,6 +80,9 @@ func run() (*driver.DB, error) {
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
+
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
 
 	//change this to true when in production
 	app.InProduction = false
