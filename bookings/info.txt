@@ -25,3 +25,6 @@ https://go.dev/play/p/uKMMCzJWGsW
 
 // 관리템플릿
 https://github.com/BootstrapDash/RoyalUI-Free-Bootstrap-Admin-Template
+
+//DataTables
+https://github.com/fiduswriter/Simple-DataTables
