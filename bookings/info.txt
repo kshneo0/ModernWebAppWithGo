@@ -22,3 +22,6 @@ soda generate sql SeedRestrictionsTable
 
 // Password 생성
 https://go.dev/play/p/uKMMCzJWGsW
+
+// 관리템플릿
+https://github.com/BootstrapDash/RoyalUI-Free-Bootstrap-Admin-Template
