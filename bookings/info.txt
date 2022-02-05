@@ -17,8 +17,10 @@ soda reset
 
 soda generate sql SeedRoomsTable
 soda generate sql SeedRestrictionsTable
+soda generate fizz AddProcessedToReservationsTable  
 
 
+soda migrate
 
 // Password 생성
 https://go.dev/play/p/uKMMCzJWGsW
