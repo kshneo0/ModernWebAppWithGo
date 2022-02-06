@@ -19,6 +19,9 @@ soda generate sql SeedRoomsTable
 soda generate sql SeedRestrictionsTable
 soda generate fizz AddProcessedToReservationsTable  
 
+soda generate sql AddUserToUserTable
+
+
 
 soda migrate
 
