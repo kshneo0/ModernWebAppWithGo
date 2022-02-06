@@ -71,3 +71,5 @@ linode.com
 웹서버
 nginx
 caddyserver.com
+
+/etc/supervisor
