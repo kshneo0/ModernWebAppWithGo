@@ -52,3 +52,6 @@ https://github.com/fiduswriter/Simple-DataTables
 	// if err != nil {
 	// 	log.Println(err)
 	// }
+
+.env파일
+https://github.com/joho/godotenv    
