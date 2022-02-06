@@ -55,3 +55,16 @@ https://github.com/fiduswriter/Simple-DataTables
 
 .env파일
 https://github.com/joho/godotenv    
+
+vi 치트키
+https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php
+
+
+서버
+digitalocean.com
+vultr.com
+linode.com
+
+웹서버
+nginx
+caddyserver.com
